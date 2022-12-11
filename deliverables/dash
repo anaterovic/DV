@@ -1,0 +1,370 @@
+from dash import Dash, html, dcc
+import plotly.express as px
+import pandas as pd
+
+import pandas as pd
+import numpy as np
+import chart_studio.plotly as py
+import plotly.graph_objects as go
+import cufflinks as cf
+import seaborn as sns
+import plotly.express as px
+import matplotlib as plt
+from plotly.offline import download_plotlyjs, init_notebook_mode, plot, iplot
+
+df = pd.read_csv('2021-06-metropolitan-stop-and-search.csv')
+ethnicities = pd.read_csv('ethnicities.csv')
+genders = pd.read_csv('genders.csv')
+weekdays = pd.read_csv('weekdays.csv')
+ages = pd.read_csv('ages.csv')
+dates = pd.read_csv('dates.csv')
+
+# GROUP ANALYSIS
+## ETHNICITY
+trace1 = go.Bar(
+    x=ethnicities['ethnicity'],
+    y=ethnicities['crime'],
+    text=ethnicities['percentage_crime'].apply(lambda x: '{percent:.2%}'.format(percent=x)),
+    name='Crime',
+    marker_color="#E45756",
+)
+
+trace2 = go.Bar(
+    x=ethnicities['ethnicity'],
+    y=ethnicities['nocrime'],
+    text=ethnicities['percentage_nocrime'].apply(lambda x: '{percent:.2%}'.format(percent=x)),
+    name='Non-crime',
+    marker_color="#54A54B"
+)
+
+trace3 = go.Bar(
+    x=ethnicities['ethnicity'],
+    y=ethnicities['total'],
+    name='Total',
+    marker_color="#4C78A8"
+)
+layout = go.Layout(
+    updatemenus=[
+        dict(
+            type="dropdown",
+            active=0,
+            xanchor="right",
+            yanchor="top",
+            direction="down",
+            buttons=list([
+                dict(label="Summary",
+                     method="update",
+                     args=[{"visible": [True, True, True]
+                     },
+                     {"title": "By Ethnicity",
+                     }]),
+                dict(label="Crime",
+                     method="update",
+                     args=[{"visible": [True, False, False]},
+                           {"title": "By Ethnicity"}]),
+                dict(label="Non-crime",
+                     method="update",
+                     args=[{"visible": [False, True, False]},
+                     {"title": "By Ethnicity"}]),
+                dict(label="Total",
+                     method="update",
+                     args=[{"visible": [False, False, True]
+                     },
+                     {"title": "By Ethnicity",
+                     }])
+            ]),
+        )
+    ])
+
+fig_ethnicity = go.Figure(data=[trace1, trace2, trace3], layout=layout)
+fig_ethnicity.update_layout(
+    xaxis_title="Ethnicity",
+    yaxis_title="Number of People",
+    title="By Ethnicity"
+)
+
+## GENDER
+trace1 = go.Bar(
+    x=genders['gender'],
+    y=genders['crime'],
+    text=genders['percentage_crime'].apply(lambda x: '{percent:.2%}'.format(percent=x)),
+    name='Crime',
+    marker_color="#E45756",
+)
+
+trace2 = go.Bar(
+    x=genders['gender'],
+    y=genders['nocrime'],
+    text=genders['percentage_nocrime'].apply(lambda x: '{percent:.2%}'.format(percent=x)),
+    name='Non-crime',
+    marker_color="#54A54B"
+)
+
+trace3 = go.Bar(
+    x=genders['gender'],
+    y=genders['total'],
+    name='Total',
+    marker_color="#4C78A8"
+)
+layout = go.Layout(
+    updatemenus=[
+        dict(
+            type="dropdown",
+            active=0,
+            xanchor="right",
+            yanchor="top",
+            direction="down",
+            buttons=list([
+                dict(label="Summary",
+                     method="update",
+                     args=[{"visible": [True, True, True]
+                     },
+                     {"title": "By Gender",
+                     }]),
+                dict(label="Crime",
+                     method="update",
+                     args=[{"visible": [True, False, False]},
+                           {"title": "By Gender"}]),
+                dict(label="Non-crime",
+                     method="update",
+                     args=[{"visible": [False, True, False]},
+                     {"title": "By Gender"}]),
+                dict(label="Total",
+                     method="update",
+                     args=[{"visible": [False, False, True]
+                     },
+                     {"title": "By Gender",
+                     }])
+            ]),
+        )
+    ])
+
+fig_gender = go.Figure(data=[trace1, trace2, trace3], layout=layout)
+fig_gender.update_layout(
+    xaxis_title="Gender",
+    yaxis_title="Number of People",
+    title="By Gender"
+)
+
+## AGE
+
+trace1 = go.Bar(
+    x=ages['age'],
+    y=ages['crime'],
+    text=ages['percentage_crime'].apply(lambda x: '{percent:.2%}'.format(percent=x)),
+    name='Crime',
+    marker_color="#E45756",
+)
+
+trace2 = go.Bar(
+    x=ages['age'],
+    y=ages['nocrime'],
+    text=ages['percentage_nocrime'].apply(lambda x: '{percent:.2%}'.format(percent=x)),
+    name='Non-crime',
+    marker_color="#54A54B"
+)
+
+trace3 = go.Bar(
+    x=ages['age'],
+    y=ages['total'],
+    name='Total',
+    marker_color="#4C78A8"
+)
+layout = go.Layout(
+    updatemenus=[
+        dict(
+            type="dropdown",
+            active=0,
+            xanchor="right",
+            yanchor="top",
+            direction="down",
+            buttons=list([
+                dict(label="Summary",
+                     method="update",
+                     args=[{"visible": [True, True, True]
+                     },
+                     {"title": "By Age",
+                     }]),
+                dict(label="Crime",
+                     method="update",
+                     args=[{"visible": [True, False, False]},
+                           {"title": "By Age"}]),
+                dict(label="Non-crime",
+                     method="update",
+                     args=[{"visible": [False, True, False]},
+                     {"title": "By Age"}]),
+                dict(label="Total",
+                     method="update",
+                     args=[{"visible": [False, False, True]
+                     },
+                     {"title": "By Age",
+                     }])
+            ]),
+        )
+    ])
+
+fig_age = go.Figure(data=[trace1, trace2, trace3], layout=layout)
+fig_age.update_layout(
+    xaxis_title="Age range",
+    yaxis_title="Number of People",
+    title="By Age"
+)
+
+# GEOGRAPHICAL ANALYSIS
+
+### Ana your code here:
+
+
+
+# TEMPORAL ANALYSIS
+
+## FULL TIME
+
+trace1 = go.Bar(
+    x=dates['date'],
+    y=dates['crime'],
+    name='Crime',
+    marker_color="#E45756",
+)
+
+trace2 = go.Bar(
+    x=dates['date'],
+    y=dates['nocrime'],
+    name='Non-crime',
+    marker_color="#54A54B"
+)
+
+trace3 = go.Bar(
+    x=dates['date'],
+    y=dates['total'],
+    name='Total',
+    marker_color="#4C78A8"
+)
+layout = go.Layout(
+    updatemenus=[
+        dict(
+            type="dropdown",
+            active=0,
+            xanchor="right",
+            yanchor="top",
+            direction="down",
+            buttons=list([
+                dict(label="Summary",
+                     method="update",
+                     args=[{"visible": [True, True, True]
+                     },
+                     {"title": "Whole Timespan",
+                     }]),
+                dict(label="Crime",
+                     method="update",
+                     args=[{"visible": [True, False, False]},
+                           {"title": "Whole Timespan"}]),
+                dict(label="Non-crime",
+                     method="update",
+                     args=[{"visible": [False, True, False]},
+                     {"title": "Whole Timespan"}]),
+                dict(label="Total",
+                     method="update",
+                     args=[{"visible": [False, False, True]
+                     },
+                     {"title": "Whole Timespan",
+                     }])
+            ]),
+        )
+    ])
+
+fig_time = go.Figure(data=[trace1, trace2, trace3], layout=layout)
+fig_time.update_layout(
+    xaxis_title="Date",
+    yaxis_title="Number of Stop and Searches",
+    title="Whole Timespan"
+)
+
+## WEEKDAY
+
+trace1 = go.Bar(
+    x=weekdays['weekday'],
+    y=weekdays['crime'],
+    name='Crime',
+    marker_color="#E45756",
+)
+
+trace2 = go.Bar(
+    x=weekdays['weekday'],
+    y=weekdays['nocrime'],
+    name='Non-crime',
+    marker_color="#54A54B"
+)
+
+trace3 = go.Bar(
+    x=weekdays['weekday'],
+    y=weekdays['total'],
+    name='Total',
+    marker_color="#4C78A8"
+)
+layout = go.Layout(
+    updatemenus=[
+        dict(
+            type="dropdown",
+            active=0,
+            xanchor="right",
+            yanchor="top",
+            direction="down",
+            buttons=list([
+                dict(label="Summary",
+                     method="update",
+                     args=[{"visible": [True, True, True]
+                     },
+                     {"title": "By Weekday",
+                     }]),
+                dict(label="Crime",
+                     method="update",
+                     args=[{"visible": [True, False, False]},
+                           {"title": "By Weekday"}]),
+                dict(label="Non-crime",
+                     method="update",
+                     args=[{"visible": [False, True, False]},
+                     {"title": "By Weekday"}]),
+                dict(label="Total",
+                     method="update",
+                     args=[{"visible": [False, False, True]
+                     },
+                     {"title": "By Weekday",
+                     }])
+            ]),
+        )
+    ])
+
+fig_week = go.Figure(data=[trace1, trace2, trace3], layout=layout)
+fig_week.update_layout(
+    xaxis_title="Weekday",
+    yaxis_title="Number of Stop and Searches",
+    title="By Weekday",   
+)
+
+## HOUR
+ 
+### TODO
+
+
+app = Dash(__name__)
+
+app.layout = html.Div(children=[
+    dcc.Tabs([
+        dcc.Tab(label='Group Analysis', children=[
+            dcc.Graph(id='ethnicity', figure=fig_ethnicity), 
+            dcc.Graph(id='gender', figure=fig_gender), 
+            dcc.Graph(id='age', figure=fig_age)
+            ]),
+        dcc.Tab(label='Geographical Analysis', children=[
+            # Ana your code here:
+            ]),
+        dcc.Tab(label='Temporal Analysis', children=[
+            dcc.Graph(id='time', figure=fig_time),
+            dcc.Graph(id='week', figure=fig_week),
+            ])
+        ]),    
+], style={'font-family':' Arial, Helvetica, sans-serif'})
+
+if __name__ == '__main__':
+    app.run_server(debug=False)
