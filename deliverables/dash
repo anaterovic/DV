@@ -12,7 +12,10 @@ import plotly.express as px
 import matplotlib as plt
 from plotly.offline import download_plotlyjs, init_notebook_mode, plot, iplot
 
+MAPBOXTOKEN = 'pk.eyJ1IjoiY293Ym95MTIzIiwiYSI6ImNsYmo5bmwzNzB2Z3Izd21vZ3huaDQ4bGQifQ.NNQSc0GX2iJvtROFNtekFw'
+
 df = pd.read_csv('2021-06-metropolitan-stop-and-search.csv')
+data_cords = pd.read_csv('data_cords.csv')
 ethnicities = pd.read_csv('ethnicities.csv')
 genders = pd.read_csv('genders.csv')
 weekdays = pd.read_csv('weekdays.csv')
@@ -212,9 +215,227 @@ fig_age.update_layout(
 
 # GEOGRAPHICAL ANALYSIS
 
-### Ana your code here:
+def make_trace(df, property_name, value, name):
+    df = df.where(df[property_name]==value).dropna()
+    trace = go.Scattermapbox(
+        name=name,
+        lon=df['Longitude'], 
+        lat=df['Latitude'], 
+        mode='markers', 
+        marker=go.scattermapbox.Marker(size=5, color=df['Crime'], colorscale=['green', 'red']))
+    return trace
+
+## filter by race
+white_trace = make_trace(data_cords, "ethnicity", "White", "White")
+black_trace = make_trace(data_cords, "ethnicity", "Black", "Black")
+asian_trace = make_trace(data_cords, "ethnicity", "Asian", "Asian")
+mixed_trace = make_trace(data_cords, "ethnicity", "Mixed", "Mixed")
+
+layout_race = go.Layout(
+    title = {'text': f"London Stop and Search Data filtered by race",
+            'font': {'size':24}},
+    mapbox1 = dict(
+        domain = {'x': [0, 1],'y': [0, 1]}, 
+        center = dict(lat=51.509865 , lon=-0.118092),
+        accesstoken = MAPBOXTOKEN, 
+        zoom = 9.5),                      
+    autosize=True,
+    height=650,
+    margin=dict(l=0, r=0, t=40, b=0),
+    updatemenus=[
+        dict(
+            type="buttons",
+            active=0,
+            xanchor="left",
+            yanchor="top",
+            direction="down",
+            buttons=list([
+                dict(label="Summary",
+                     method="update",
+                     args=[{"visible": [True, True, True, True]},
+                     {"title": "Summary of stop and searches filtered by race"}]),
+                dict(label="White",
+                     method="update",
+                     args=[{"visible": [True, False, False, False]},
+                           {"title": "Stop and searches done on white people"}]),
+                dict(label="Black",
+                     method="update",
+                     args=[{"visible": [False, True, False, False]},
+                           {"title": "Stop and searches done on black people"}]),
+                dict(label="Asian",
+                     method="update",
+                     args=[{"visible": [False, False, True, False]},
+                     {"title": "Stop and searches done on asian people"}]),
+                dict(label="Mixed",
+                     method="update",
+                     args=[{"visible": [False, False, False, True]
+                     },
+                     {"title": "Stop and searches done on mixed people",
+                     }])
+            ]),
+        )
+    ])
+
+fig_map_ethnicity = go.Figure(data=[white_trace, black_trace, asian_trace, mixed_trace], layout=layout_race)
+fig_map_ethnicity.update_traces(showlegend=False)
 
 
+## filter by crime
+
+drugs_trace = make_trace(data_cords, "Legislation_simplified", "Drugs", "Drugs")
+evidence_trace = make_trace(data_cords, "Legislation_simplified", "Criminal Evidence Act", "Criminal Evidence Act")
+firearms_trace = make_trace(data_cords, "Legislation_simplified", "Firearms", "Firearms")
+order_trace = make_trace(data_cords, "Legislation_simplified", "Public Order Act", "Public Order Act")
+
+layout_crime = go.Layout(
+    title = {'text': f"London Stop and Search Data filtered by legislation",
+            'font': {'size':24}},
+    mapbox1 = dict(
+        domain = {'x': [0, 1],'y': [0, 1]}, 
+        center = dict(lat=51.509865 , lon=-0.118092),
+        accesstoken = MAPBOXTOKEN, 
+        zoom = 9.5),                      
+    autosize=True,
+    height=650,
+    margin=dict(l=0, r=0, t=40, b=0),
+    updatemenus=[
+        dict(
+            type="buttons",
+            active=0,
+            xanchor="left",
+            yanchor="top",
+            direction="down",
+            buttons=list([
+                dict(label="Summary",
+                     method="update",
+                     args=[{"visible": [True, True, True, True]},
+                     {"title": "Summary of stop and searches filtered by legislation"}]),
+                dict(label="Drugs",
+                     method="update",
+                     args=[{"visible": [True, False, False, False]},
+                           {"title": "Stop and searches done for drugs"}]),
+                dict(label="Criminal Evidence",
+                     method="update",
+                     args=[{"visible": [False, True, False, False]},
+                           {"title": "Stop and searches done for criminal evidence"}]),
+                dict(label="Firearms",
+                     method="update",
+                     args=[{"visible": [False, False, True, False]},
+                     {"title": "Stop and searches done for firearms"}]),
+                dict(label="Public Order",
+                     method="update",
+                     args=[{"visible": [False, False, False, True]
+                     },
+                     {"title": "Stop and searches done because of public order",
+                     }])
+            ]),
+        )
+    ])
+
+fig_map_crime = go.Figure(data=[drugs_trace, evidence_trace, firearms_trace, order_trace], layout=layout_crime)
+fig_map_crime.update_traces(showlegend=False)
+
+## filter by gender
+
+male_trace = make_trace(data_cords, "Gender", "Male", "Male")
+female_trace = make_trace(data_cords, "Gender", "Female", "Female")
+
+layout_gender = go.Layout(
+    title = {'text': f"London Stop and Search Data filtered by gender",
+            'font': {'size':24}},
+    mapbox1 = dict(
+        domain = {'x': [0, 1],'y': [0, 1]}, 
+        center = dict(lat=51.509865 , lon=-0.118092),
+        accesstoken = MAPBOXTOKEN, 
+        zoom = 9.5),                      
+    autosize=True,
+    height=650,
+    margin=dict(l=0, r=0, t=40, b=0),
+    updatemenus=[
+        dict(
+            type="buttons",
+            active=0,
+            xanchor="left",
+            yanchor="top",
+            direction="down",
+            buttons=list([
+                dict(label="Summary",
+                     method="update",
+                     args=[{"visible": [True, True]},
+                     {"title": "Summary of stop and searches filtered by gender"}]),
+                dict(label="Male",
+                     method="update",
+                     args=[{"visible": [True, False]},
+                           {"title": "Stop and searches done on males"}]),
+                dict(label="Female",
+                     method="update",
+                     args=[{"visible": [False, True]},
+                           {"title": "Stop and searches done on females"}]),
+            ]),
+        )
+    ])
+
+fig_map_gender = go.Figure(data=[male_trace, female_trace], layout=layout_gender)
+fig_map_gender.update_traces(showlegend=False)
+
+## filter by age
+age1_trace = make_trace(data_cords, "Age range", "18-24", "18-24")
+age2_trace = make_trace(data_cords, "Age range", "25-34", "25-34")
+age3_trace = make_trace(data_cords, "Age range", "over 34", "over 34")
+age4_trace = make_trace(data_cords, "Age range", "10-17", "10-17")
+age5_trace = make_trace(data_cords, "Age range", "under 10", "under 10")
+
+layout_age = go.Layout(
+    title = {'text': f"London Stop and Search Data filtered by age",
+            'font': {'size':24}},
+    mapbox1 = dict(
+        domain = {'x': [0, 1],'y': [0, 1]}, 
+        center = dict(lat=51.509865 , lon=-0.118092),
+        accesstoken = MAPBOXTOKEN, 
+        zoom = 9.5),                      
+    autosize=True,
+    height=650,
+    margin=dict(l=0, r=0, t=40, b=0),
+    updatemenus=[
+        dict(
+            type="buttons",
+            active=0,
+            xanchor="left",
+            yanchor="top",
+            direction="down",
+            buttons=list([
+                dict(label="Summary",
+                     method="update",
+                     args=[{"visible": [True, True, True, True]},
+                     {"title": "Summary of stop and searches filtered by age"}]),
+                dict(label="under 10",
+                     method="update",
+                     args=[{"visible": [True, False, False, False, False]},
+                           {"title": "Stop and searches done for age range under 10"}]),
+                dict(label="10-17",
+                     method="update",
+                     args=[{"visible": [False, True, False, False, False]},
+                           {"title": "Stop and searches done for age range 10-17"}]),
+                dict(label="18-25",
+                     method="update",
+                     args=[{"visible": [False, False, True, False, False]},
+                     {"title": "Stop and searches done for age range 18-25"}]),
+                dict(label="25-34",
+                     method="update",
+                     args=[{"visible": [False, False,False, True, False]},
+                     {"title": "Stop and searches done for age range 25-34"}]),
+                dict(label="over 34",
+                     method="update",
+                     args=[{"visible": [False, False, False, False, True]
+                     },
+                     {"title": "Stop and searches done for age range over 34",
+                     }])
+            ]),
+        )
+    ])
+
+fig_map_age = go.Figure(data=[age5_trace, age4_trace, age1_trace, age2_trace, age3_trace], layout=layout_age)
+fig_map_age.update_traces(showlegend=False)
 
 # TEMPORAL ANALYSIS
 
@@ -357,7 +578,10 @@ app.layout = html.Div(children=[
             dcc.Graph(id='age', figure=fig_age)
             ]),
         dcc.Tab(label='Geographical Analysis', children=[
-            # Ana your code here:
+            dcc.Graph(id='map_ethnicity', figure=fig_map_ethnicity), 
+            dcc.Graph(id='map_gender', figure=fig_map_gender), 
+            dcc.Graph(id='map_age', figure=fig_map_age),
+            dcc.Graph(id='map_crime', figure=fig_map_crime),
             ]),
         dcc.Tab(label='Temporal Analysis', children=[
             dcc.Graph(id='time', figure=fig_time),
