@@ -3,3 +3,4 @@ In order to start the dashboard place yourself in stopandsearch/deliverables/ an
 ```
 python dash
 ```
+To view the dashboard open the adress of the local server in your browser.
