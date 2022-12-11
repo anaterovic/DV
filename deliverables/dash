@@ -232,16 +232,14 @@ asian_trace = make_trace(data_cords, "ethnicity", "Asian", "Asian")
 mixed_trace = make_trace(data_cords, "ethnicity", "Mixed", "Mixed")
 
 layout_race = go.Layout(
-    title = {'text': f"London Stop and Search Data filtered by race",
-            'font': {'size':24}},
+    title="By Ethnicity",
     mapbox1 = dict(
         domain = {'x': [0, 1],'y': [0, 1]}, 
         center = dict(lat=51.509865 , lon=-0.118092),
         accesstoken = MAPBOXTOKEN, 
-        zoom = 9.5),                      
+        zoom = 9.5),
     autosize=True,
-    height=650,
-    margin=dict(l=0, r=0, t=40, b=0),
+    height=650,                      
     updatemenus=[
         dict(
             type="buttons",
@@ -250,27 +248,27 @@ layout_race = go.Layout(
             yanchor="top",
             direction="down",
             buttons=list([
-                dict(label="Summary",
+                dict(label="Total",
                      method="update",
                      args=[{"visible": [True, True, True, True]},
-                     {"title": "Summary of stop and searches filtered by race"}]),
+                     {"title": "By Ethnicity"}]),
                 dict(label="White",
                      method="update",
                      args=[{"visible": [True, False, False, False]},
-                           {"title": "Stop and searches done on white people"}]),
+                           {"title": "Stop and Searches Done on People of White Ethnicity"}]),
                 dict(label="Black",
                      method="update",
                      args=[{"visible": [False, True, False, False]},
-                           {"title": "Stop and searches done on black people"}]),
+                           {"title": "Stop and Searches Done on People of African-American Ethnicity"}]),
                 dict(label="Asian",
                      method="update",
                      args=[{"visible": [False, False, True, False]},
-                     {"title": "Stop and searches done on asian people"}]),
+                     {"title": "Stop and Searches Done on People of Asian Ethnicity"}]),
                 dict(label="Mixed",
                      method="update",
                      args=[{"visible": [False, False, False, True]
                      },
-                     {"title": "Stop and searches done on mixed people",
+                     {"title": "Stop and Searches Done on People of Mixed Ethnicity",
                      }])
             ]),
         )
@@ -288,16 +286,14 @@ firearms_trace = make_trace(data_cords, "Legislation_simplified", "Firearms", "F
 order_trace = make_trace(data_cords, "Legislation_simplified", "Public Order Act", "Public Order Act")
 
 layout_crime = go.Layout(
-    title = {'text': f"London Stop and Search Data filtered by legislation",
-            'font': {'size':24}},
+    title="By Legislation",
     mapbox1 = dict(
         domain = {'x': [0, 1],'y': [0, 1]}, 
         center = dict(lat=51.509865 , lon=-0.118092),
         accesstoken = MAPBOXTOKEN, 
-        zoom = 9.5),                      
+        zoom = 9.5),
     autosize=True,
-    height=650,
-    margin=dict(l=0, r=0, t=40, b=0),
+    height=650,                      
     updatemenus=[
         dict(
             type="buttons",
@@ -306,27 +302,27 @@ layout_crime = go.Layout(
             yanchor="top",
             direction="down",
             buttons=list([
-                dict(label="Summary",
+                dict(label="Total",
                      method="update",
                      args=[{"visible": [True, True, True, True]},
-                     {"title": "Summary of stop and searches filtered by legislation"}]),
+                     {"title": "By Legislation"}]),
                 dict(label="Drugs",
                      method="update",
                      args=[{"visible": [True, False, False, False]},
-                           {"title": "Stop and searches done for drugs"}]),
+                           {"title": "Stop and Searches Done For Drugs"}]),
                 dict(label="Criminal Evidence",
                      method="update",
                      args=[{"visible": [False, True, False, False]},
-                           {"title": "Stop and searches done for criminal evidence"}]),
+                           {"title": "Stop and Searches Done For Criminal Evidence"}]),
                 dict(label="Firearms",
                      method="update",
                      args=[{"visible": [False, False, True, False]},
-                     {"title": "Stop and searches done for firearms"}]),
+                     {"title": "Stop and Searches Done for Firearms"}]),
                 dict(label="Public Order",
                      method="update",
                      args=[{"visible": [False, False, False, True]
                      },
-                     {"title": "Stop and searches done because of public order",
+                     {"title": "Stop and Searches Done for Public Order",
                      }])
             ]),
         )
@@ -341,16 +337,14 @@ male_trace = make_trace(data_cords, "Gender", "Male", "Male")
 female_trace = make_trace(data_cords, "Gender", "Female", "Female")
 
 layout_gender = go.Layout(
-    title = {'text': f"London Stop and Search Data filtered by gender",
-            'font': {'size':24}},
+    title= "By Gender",
     mapbox1 = dict(
         domain = {'x': [0, 1],'y': [0, 1]}, 
         center = dict(lat=51.509865 , lon=-0.118092),
         accesstoken = MAPBOXTOKEN, 
-        zoom = 9.5),                      
+        zoom = 9.5),
     autosize=True,
-    height=650,
-    margin=dict(l=0, r=0, t=40, b=0),
+    height=650,                      
     updatemenus=[
         dict(
             type="buttons",
@@ -359,18 +353,18 @@ layout_gender = go.Layout(
             yanchor="top",
             direction="down",
             buttons=list([
-                dict(label="Summary",
+                dict(label="Total",
                      method="update",
                      args=[{"visible": [True, True]},
-                     {"title": "Summary of stop and searches filtered by gender"}]),
+                     {"title": "By Gender"}]),
                 dict(label="Male",
                      method="update",
                      args=[{"visible": [True, False]},
-                           {"title": "Stop and searches done on males"}]),
+                           {"title": "Stop and Searches Done on Males"}]),
                 dict(label="Female",
                      method="update",
                      args=[{"visible": [False, True]},
-                           {"title": "Stop and searches done on females"}]),
+                           {"title": "Stop and Searches Done on Females"}]),
             ]),
         )
     ])
@@ -386,16 +380,14 @@ age4_trace = make_trace(data_cords, "Age range", "10-17", "10-17")
 age5_trace = make_trace(data_cords, "Age range", "under 10", "under 10")
 
 layout_age = go.Layout(
-    title = {'text': f"London Stop and Search Data filtered by age",
-            'font': {'size':24}},
+    title="By Age",
     mapbox1 = dict(
         domain = {'x': [0, 1],'y': [0, 1]}, 
         center = dict(lat=51.509865 , lon=-0.118092),
         accesstoken = MAPBOXTOKEN, 
-        zoom = 9.5),                      
+        zoom = 9.5),
     autosize=True,
-    height=650,
-    margin=dict(l=0, r=0, t=40, b=0),
+    height=650,                      
     updatemenus=[
         dict(
             type="buttons",
@@ -404,31 +396,31 @@ layout_age = go.Layout(
             yanchor="top",
             direction="down",
             buttons=list([
-                dict(label="Summary",
+                dict(label="Total",
                      method="update",
                      args=[{"visible": [True, True, True, True]},
-                     {"title": "Summary of stop and searches filtered by age"}]),
+                     {"title": "By Age"}]),
                 dict(label="under 10",
                      method="update",
                      args=[{"visible": [True, False, False, False, False]},
-                           {"title": "Stop and searches done for age range under 10"}]),
+                           {"title": "Stop and Searches Done on People of Age Under 10"}]),
                 dict(label="10-17",
                      method="update",
                      args=[{"visible": [False, True, False, False, False]},
-                           {"title": "Stop and searches done for age range 10-17"}]),
+                           {"title": "Stop and Searches Done on People of Age 10-17"}]),
                 dict(label="18-25",
                      method="update",
                      args=[{"visible": [False, False, True, False, False]},
-                     {"title": "Stop and searches done for age range 18-25"}]),
+                     {"title": "Stop and Searches Done on People of Age 18-25"}]),
                 dict(label="25-34",
                      method="update",
                      args=[{"visible": [False, False,False, True, False]},
-                     {"title": "Stop and searches done for age range 25-34"}]),
+                     {"title": "Stop and Searches Done on People of Age 25-34"}]),
                 dict(label="over 34",
                      method="update",
                      args=[{"visible": [False, False, False, False, True]
                      },
-                     {"title": "Stop and searches done for age range over 34",
+                     {"title": "Stop and Searches Done on People of Age over 34",
                      }])
             ]),
         )
@@ -589,6 +581,8 @@ app.layout = html.Div(children=[
             ])
         ]),    
 ], style={'font-family':' Arial, Helvetica, sans-serif'})
+
+# app.title = 'Stop and Search Dashboard'
 
 if __name__ == '__main__':
     app.run_server(debug=False)
