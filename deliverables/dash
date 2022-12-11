@@ -21,6 +21,7 @@ genders = pd.read_csv('genders.csv')
 weekdays = pd.read_csv('weekdays.csv')
 ages = pd.read_csv('ages.csv')
 dates = pd.read_csv('dates.csv')
+hours = pd.read_csv('hours.csv')
 
 # GROUP ANALYSIS
 ## ETHNICITY
@@ -557,7 +558,65 @@ fig_week.update_layout(
 
 ## HOUR
  
-### TODO
+trace1 = go.Bar(
+    x=hours['hour'],
+    y=hours['crime'],
+    name='Crime',
+    marker_color="#E45756",
+)
+
+trace2 = go.Bar(
+    x=hours['hour'],
+    y=hours['nocrime'],
+    name='Non-crime',
+    marker_color="#54A54B"
+)
+
+trace3 = go.Bar(
+    x=hours['hour'],
+    y=hours['total'],
+    name='Total',
+    marker_color="#4C78A8"
+)
+layout = go.Layout(
+    updatemenus=[
+        dict(
+            type="dropdown",
+            active=0,
+            xanchor="right",
+            yanchor="top",
+            direction="down",
+            buttons=list([
+                dict(label="Summary",
+                     method="update",
+                     args=[{"visible": [True, True, True]
+                     },
+                     {"title": "By Hour",
+                     }]),
+                dict(label="Crime",
+                     method="update",
+                     args=[{"visible": [True, False, False]},
+                           {"title": "By Hour"}]),
+                dict(label="Non-crime",
+                     method="update",
+                     args=[{"visible": [False, True, False]},
+                     {"title": "By Hour"}]),
+                dict(label="Total",
+                     method="update",
+                     args=[{"visible": [False, False, True]
+                     },
+                     {"title": "By Hour",
+                     }])
+            ]),
+        )
+    ])
+
+fig_day = go.Figure(data=[trace1, trace2, trace3], layout=layout)
+fig_day.update_layout(
+    xaxis_title="Hour",
+    yaxis_title="Number of Stop and Searches",
+    title="By Hour",   
+)
 
 
 app = Dash(__name__)
@@ -578,6 +637,7 @@ app.layout = html.Div(children=[
         dcc.Tab(label='Temporal Analysis', children=[
             dcc.Graph(id='time', figure=fig_time),
             dcc.Graph(id='week', figure=fig_week),
+            dcc.Graph(id='day', figure=fig_day),
             ])
         ]),    
 ], style={'font-family':' Arial, Helvetica, sans-serif'})
